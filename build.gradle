@@ -1,0 +1,41 @@
+plugins {
+    id 'maven'
+}
+
+group "${GROUP_ID}"
+version "${VERSION}"
+
+subprojects {
+    group "${GROUP_ID}"
+    version "${VERSION}"
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    sourceCompatibility = "${JDK}"
+    repositories {
+        maven{ url 'http://repo.lonntec.cn/repository/maven-public/' }
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        jcenter()
+    }
+    dependencies {
+        testImplementation "junit:junit:${JUNIT}"
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+dependencies {
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "${UPLOAD_URL}") {
+                authentication(userName: "${UPLOAD_USERNAME}", password: "${UPLOAD_PASSWORD}")
+            }
+            pom.version = "${VERSION}"
+            pom.artifactId = "${project.name}"
+            pom.groupId = "${GROUP_ID}"
+        }
+    }
+}
