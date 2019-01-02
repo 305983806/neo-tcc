@@ -25,15 +25,15 @@ public class TransactionManager {
     private ExecutorService executorService;
 
     /**
-     * 开启主事务
+     * 开启根事务
      * @return 事务对象
      */
     public Transaction begin() {
-        // 创建并存储主事务
+        // 创建并存储根事务
         Transaction transaction = new Transaction(TransactionType.ROOT);
         // 存储事务
         transactionRepository.create(transaction);
-        // 将主事务注册到当前线程的事务队列
+        // 将根事务注册到当前线程的事务队列
         registerTransaction(transaction);
         return transaction;
     }
@@ -114,14 +114,86 @@ public class TransactionManager {
             transaction.commit();
             transactionRepository.delete(transaction);
         } catch (Throwable commitException) {
-            log.warn("compensable transaction async submit confirm failed, recovery job will try to confirm later.", commitException);
+            log.warn("compensable transaction confirm failed, recovery job will try to confirm later.", commitException);
             throw new ConfirmingException(commitException);
         }
     }
 
-    public void rollback() {}
+    /**
+     * 回滚事务
+     * 当 try 阶段抛出了任何异常，TCC 框架会自动调用此方法。
+     * 它首先从事务管理器中取出当前活动的事务，更改事务状态为 CANCELLING，并更新事务日志。然后调用事务的 {@link Transaction#rollback()} 进行事务回滚，
+     * {@link Transaction#rollback()} 会遍历所有参与者，并分别调用参与者的 rollback()。
+     * 通常，根事务端包含根事务参与者和分支事务参与者，而分支事务参与者通常只有一个本地的事务参与者，除非它也发起了TCC分布式事务。
+     * 如果 rollback 成功，事务会被从事务日志中删除，否则直接向业务层代码抛出 CancellingException 异常，残留的事务日志稍后会被 recovery 任务处理（可选、可配置）。
+     *
+     * @param asyncRollback 是否采用异步
+     */
+    public void rollback(boolean asyncRollback) {
+        // 更改事务状态 为 CANCELLING，并更新事务日志
+        final Transaction transaction = getCurrentTransaction();
+        transaction.changeStatus(TransactionStatus.CANCELLING);
+        transactionRepository.update(transaction);
 
-    public void addParticipant() {}
+        // 回滚事务，并删除事务日志
+        if (asyncRollback) {
+            try {
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        rollbackTransaction(transaction);
+                    }
+                });
+            } catch (Throwable rollbackException) {
+                log.warn("compensable transaction async rollback failed, recovery job will try to rollback later.", rollbackException);
+                throw new CancellingException(rollbackException);
+            }
+        } else {
+            rollbackTransaction(transaction);
+        }
+    }
+
+    private void rollbackTransaction(Transaction transaction) {
+        try {
+            transaction.rollback();
+            transactionRepository.delete(transaction);
+        } catch (Throwable rollbackException) {
+            log.warn("compensable transaction rollback failed, recovery job will try to rollback later.", rollbackException);
+            throw new CancellingException(rollbackException);
+        }
+    }
+
+    /**
+     * 在{@link #getCurrentTransaction()}中提到，每次从事务管理器中获取当前活动事务的时候，都不会从将其删除，那么这些事务会在什么时候删除呢？
+     * 这就是 cleanAfterCompletion 的作用。在每次事务处理结束时，TCC框架都会调用此方法进行事务的清理操作，清理之前要比对将要清理的事务是不是当前事务。
+     *
+     * @param transaction
+     */
+    public void cleanAfterCompletion(Transaction transaction) {
+        if (isTransactionActive() && transaction != null) {
+            Transaction currentTransaction = getCurrentTransaction();
+            if (currentTransaction == transaction) {
+                CURRENT.get().pop();
+                if (CURRENT.get().size() == 0) {
+                    CURRENT.remove();
+                }
+            } else {
+                throw new SystemException("Illegal transaction when clean after completion");
+            }
+        }
+    }
+
+    /**
+     * 添加事务参与者
+     * 用于向事务中添加一个事务参与者，这里的参与者包含了本地参与者和远程参与者，添加参与者之后必须更新事务日志，并且会在添加到TCC事务方法的切面中被调用。
+     *
+     * @param participant 参与者
+     */
+    public void addParticipant(Participant participant) {
+        Transaction transaction = this.getCurrentTransaction();
+        transaction.addParticipant(participant);
+        transactionRepository.update(transaction);
+    }
 
     /**
      * 获取当前线程事务第一个（头部）元素
@@ -130,6 +202,7 @@ public class TransactionManager {
      */
     public Transaction getCurrentTransaction() {
         if (isTransactionActive()) {
+            // 拿到队列头的事务（但是不从删除，删除是在 cleanAfterCompletion 中进行）
             return CURRENT.get().peek(); // 获得头部元素
         }
         return null;
