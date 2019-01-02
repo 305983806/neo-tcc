@@ -14,6 +14,6 @@ public interface TransactionRepository {
     int create(Transaction transaction);
     int update(Transaction transaction);
     int delete(Transaction transaction);
-    int getTransaction(TransactionId id);
+    Transaction getTransaction(TransactionId id);
     List<Transaction> getTimeoutTransactions(Date date);
 }

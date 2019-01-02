@@ -17,6 +17,7 @@ subprojects {
         jcenter()
     }
     dependencies {
+        compile "org.slf4j:slf4j-api:${SLF4J}"
         testImplementation "junit:junit:${JUNIT}"
     }
     tasks.withType(JavaCompile) {
