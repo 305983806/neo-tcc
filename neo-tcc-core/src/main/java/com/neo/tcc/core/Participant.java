@@ -1,6 +1,9 @@
 package com.neo.tcc.core;
 
+import com.neo.tcc.core.api.TransactionContext;
+import com.neo.tcc.core.api.TransactionContextEditor;
 import com.neo.tcc.core.api.TransactionId;
+import com.neo.tcc.core.common.TransactionStatus;
 
 /**
  * @Auther: cp.Chen
@@ -25,13 +28,42 @@ public class Participant {
      */
     private Terminator terminator = new Terminator();
 
+    /**
+     * 事务上下文编辑器
+     */
+    Class<? extends TransactionContextEditor> transactionContextEditorClass;
 
-
+    /**
+     * 提交事务
+     */
     public void commit() {
-
+        terminator.invoke(new TransactionContext(id, TransactionStatus.CONFIRMING.getId()), confirmInvocationContext, transactionContextEditorClass);
     }
 
+    /**
+     * 回滚事务
+     */
     public void rollback() {
+        terminator.invoke(new TransactionContext(id, TransactionStatus.CANCELLING.getId()), cancelInvocationContext, transactionContextEditorClass);
+    }
 
+    public TransactionId getId() {
+        return id;
+    }
+
+    public void setId(TransactionId id) {
+        this.id = id;
+    }
+
+    public InvocationContext getConfirmInvocationContext() {
+        return confirmInvocationContext;
+    }
+
+    public InvocationContext getCancelInvocationContext() {
+        return cancelInvocationContext;
+    }
+
+    public Terminator getTerminator() {
+        return terminator;
     }
 }
