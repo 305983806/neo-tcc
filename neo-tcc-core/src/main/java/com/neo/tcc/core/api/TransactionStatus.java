@@ -1,4 +1,4 @@
-package com.neo.tcc.core.common;
+package com.neo.tcc.core.api;
 
 /**
  * @Auther: cp.Chen

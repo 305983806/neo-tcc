@@ -3,7 +3,7 @@ package com.neo.tcc.core;
 import com.neo.tcc.core.api.TransactionContext;
 import com.neo.tcc.core.api.TransactionContextEditor;
 import com.neo.tcc.core.api.TransactionId;
-import com.neo.tcc.core.common.TransactionStatus;
+import com.neo.tcc.core.api.TransactionStatus;
 
 /**
  * @Auther: cp.Chen

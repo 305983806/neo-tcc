@@ -4,4 +4,5 @@ dependencies {
     implementation "com.alibaba:fastjson:${FASTJSON}"
     implementation "com.esotericsoftware:kryo-shaded:${KRYO_SHADED}"
     implementation "org.apache.commons:commons-lang3:${COMMONS_LANG3}"
+    implementation "org.aspectj:aspectjweaver:${ASPECTJWEAVER}"
 }

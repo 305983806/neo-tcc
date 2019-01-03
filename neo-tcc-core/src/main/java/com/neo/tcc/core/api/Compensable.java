@@ -35,8 +35,31 @@ public @interface Compensable {
      */
     String cancelMethod() default "";
 
-    Class<? extends TransactionContextEditor> transactionContextEditor();
+    /**
+     * 事务上下文编辑类
+     *
+     * @return
+     */
+    Class<? extends TransactionContextEditor> transactionContextEditor() default DefaultTransactionContextEditor.class;
 
+    boolean asyncConfirm() default false;
+
+    boolean asyncCancel() default false;
+
+    /**
+     * 无事务上下文编辑器实现
+     */
+    class NullableTransactionContextEditor implements TransactionContextEditor {
+
+        @Override
+        public TransactionContext get(Object target, Method method, Object[] args) {
+            return null;
+        }
+
+        @Override
+        public void set(TransactionContext context, Object target, Method method, Object[] args) {
+        }
+    }
 
     /**
      * 默认事务上下文编辑器实现
@@ -74,6 +97,16 @@ public @interface Compensable {
                 }
             }
             return position;
+        }
+
+        public static TransactionContext getTransactionContextFromArgs(Object[] args) {
+            TransactionContext transactionContext = null;
+            for (Object arg : args) {
+                if (arg != null && TransactionContext.class.isAssignableFrom(arg.getClass())) {
+                    transactionContext = (TransactionContext) arg;
+                }
+            }
+            return transactionContext;
         }
     }
 }
