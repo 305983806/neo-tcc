@@ -37,6 +37,14 @@ public class CompensableMethodUtils {
 
     /**
      * 计算方法类型
+     * 计算方法类型( MethodType )的目的，可以根据不同方法类型，做不同的事务处理。
+     * 当满足以下2个条件时，返回 ROOT 方法类型（表示发起根事务）：
+     * - 事务传播级别为 Propagation.REQUIRED，并且当前没有事；
+     * - 事务传播级别为 Propagation.REQUIRES_NEW，新建事务，如果当前存在事务，把当前事务挂起。此时，事务管理器的当前线程事务队列可能会存在多个事务。
+     * 当满足以下3个条件时，返回 PROVIDER 方法类型（表示发起分支事务）：
+     * - 事务传播级别为 Propagation.REQUIRED，并且当前不存在事务，并且方法参数传递了事务上下文。
+     * - 事务传播级别为 Propagation.MANDATORY，并且当前不存在事务，并且方法参数传递了事务上下文。
+     * 方法类型为 MethodType.Normal 时，不进行事务处理。
      *
      * @param propagation 传播级别
      * @param isTransactionActive 是否开启事务

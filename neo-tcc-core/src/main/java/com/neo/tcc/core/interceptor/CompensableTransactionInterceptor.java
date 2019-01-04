@@ -65,6 +65,7 @@ public class CompensableTransactionInterceptor {
         // 处理
         switch (methodType) {
             case ROOT:
+                // 当方法类型为 MethodType.ROOT 时，调用 {@link #rootMethodProceed(ProceedingJoinPoint, boolean, boolean)} 方法，发起 TCC 整体流程
                 return rootMethodProceed(pjp, asyncConfirm, asyncCancel);
             case PROVIDER:
                 return providerMethodProceed(pjp, transactionContext, asyncConfirm, asyncCancel);
@@ -73,6 +74,21 @@ public class CompensableTransactionInterceptor {
         }
     }
 
+    /**
+     * 发起 TCC 整体流程的关键部分<br/>
+     * 调用 {@link TransactionManager#begin()} 方法，发起根事务， TCC try 阶段开始<br/>
+     * 调用 {@link ProceedingJoinPoint#proceed()} 方法，执行方法原逻辑（即 try 逻辑）<br/>
+     * 当原逻辑执行异常时，TCC try 阶段失败，调用 {@link TransactionManager#rollback(boolean)} 方法，TCC cancel 阶段，回滚事务。<br/>
+     * 此处 {@link #isDelayCancelException(Throwable)} 方法，判断异常是否为延迟取消回滚异常，部分异常不适合立即回滚事务。<br/>
+     * 当原逻辑执行成功时，TCC try 阶段成功，调用 {@link TransactionManager#commit(boolean)} 方法，TCC confirm 阶段，提交事务。<br/>
+     * 调用 {@link TransactionManager#cleanAfterCompletion(Transaction)} 方法，将事务从当前线程事务队列移除，避免线程冲突。<br/>
+     *
+     * @param pjp 切面对象
+     * @param asyncConfirm 是否异步提交
+     * @param asyncCancel 是否异步取消
+     * @return 执行结果对象
+     * @throws Throwable
+     */
     private Object rootMethodProceed(ProceedingJoinPoint pjp, boolean asyncConfirm, boolean asyncCancel) throws Throwable {
         Object returnValue;
         Transaction transaction = null;
@@ -122,8 +138,10 @@ public class CompensableTransactionInterceptor {
                     }
             }
         } finally {
+            // 将事务从当前线程事务队列移除
             transactionManager.cleanAfterCompletion(transaction);
         }
+        // 返回空值
         Method method = ((MethodSignature)pjp.getSignature()).getMethod();
         return ReflectionUtils.getNullValue(method.getReturnType());
     }
