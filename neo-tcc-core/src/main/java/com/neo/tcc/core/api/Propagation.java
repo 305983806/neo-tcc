@@ -7,7 +7,7 @@ package com.neo.tcc.core.api;
  */
 public enum Propagation {
     /**
-     * 支持当前事务，如果当前没有事务，就新建一个事务
+     * 支持当前事务，如果当前没有事务，就新建一个事务。
      */
     REQUIRED(0),
     /**
