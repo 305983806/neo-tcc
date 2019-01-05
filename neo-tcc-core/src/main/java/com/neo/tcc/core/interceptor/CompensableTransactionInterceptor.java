@@ -38,6 +38,13 @@ public class CompensableTransactionInterceptor {
         this.transactionManager = transactionManager;
     }
 
+    /**
+     * 当调用
+     *
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
     public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
         // 获得带 @Compensable 注解的方法
         Method method = CompensableMethodUtils.getCompensableMethod(pjp);
@@ -68,6 +75,7 @@ public class CompensableTransactionInterceptor {
                 // 当方法类型为 MethodType.ROOT 时，调用 {@link #rootMethodProceed(ProceedingJoinPoint, boolean, boolean)} 方法，发起 TCC 整体流程
                 return rootMethodProceed(pjp, asyncConfirm, asyncCancel);
             case PROVIDER:
+                // 当方法类型为 Propagation.PROVIDER 时，服务提供者参与 TCC 整体流程。
                 return providerMethodProceed(pjp, transactionContext, asyncConfirm, asyncCancel);
             default:
                 return pjp.proceed();
@@ -75,7 +83,7 @@ public class CompensableTransactionInterceptor {
     }
 
     /**
-     * 发起 TCC 整体流程的关键部分<br/>
+     * 发起 TCC 整体流程<br/>
      * 调用 {@link TransactionManager#begin()} 方法，发起根事务， TCC try 阶段开始<br/>
      * 调用 {@link ProceedingJoinPoint#proceed()} 方法，执行方法原逻辑（即 try 逻辑）<br/>
      * 当原逻辑执行异常时，TCC try 阶段失败，调用 {@link TransactionManager#rollback(boolean)} 方法，TCC cancel 阶段，回滚事务。<br/>
@@ -114,6 +122,23 @@ public class CompensableTransactionInterceptor {
         return returnValue;
     }
 
+    /**
+     * 当事务处于 {@link TransactionStatus#TRYING} 时，调用 {@link TransactionManager#propagationExistBegin(TransactionContext)} 方法，
+     * 传播发起分支事务。发起分支事务完成后，调用 {@link ProceedingJoinPoint#proceed()} 方法，执行方法原逻辑（即 Try 逻辑）。<br/>
+     * 当事务处理 {@link TransactionStatus#CONFIRMING} 时，调用 {@link TransactionManager#commit(boolean)} 方法提交事务。<br/>
+     * 当事务处于 {@link TransactionStatus#CANCELLING} 时，调用 {@link TransactionManager#rollback(boolean)} 方法提交事务。<br/>
+     * 调用 {@link TransactionManager#cleanAfterCompletion(Transaction)} 方法，将事务从当前线程队列移除，避免线程冲突。<br/>
+     * 当事务处于 {@link TransactionStatus#CONFIRMING} 或 {@link TransactionStatus#CANCELLING} 时，最终会调用 {@link ReflectionUtils#getNullValue(Class)} 方法，
+     * 返回空值。为什么返回空值？Confirm/Cancel 相关方法，是通过 AOP 切面调用，只调用，不返回值，但方法不能没有返回值，因此直接返回空值。<br/>
+     * 当方法类型为 Propagation.NORMAL 时，执行方法原逻辑，不进行事务处理。
+     *
+     * @param pjp
+     * @param transactionContext
+     * @param asyncConfirm
+     * @param asyncCancel
+     * @return
+     * @throws Throwable
+     */
     private Object providerMethodProceed(ProceedingJoinPoint pjp, TransactionContext transactionContext, boolean asyncConfirm, boolean asyncCancel) throws Throwable {
         Transaction transaction = null;
         try {

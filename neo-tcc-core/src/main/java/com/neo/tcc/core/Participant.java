@@ -33,6 +33,19 @@ public class Participant {
      */
     Class<? extends TransactionContextEditor> transactionContextEditorClass;
 
+    public Participant(InvocationContext confirmInvocationContext, InvocationContext cancelInvocationContext, Class<? extends TransactionContextEditor> transactionContextEditorClass) {
+        this.confirmInvocationContext = confirmInvocationContext;
+        this.cancelInvocationContext = cancelInvocationContext;
+        this.transactionContextEditorClass = transactionContextEditorClass;
+    }
+
+    public Participant(TransactionId id, InvocationContext confirmInvocationContext, InvocationContext cancelInvocationContext, Class<? extends TransactionContextEditor> transactionContextEditorClass) {
+        this.id = id;
+        this.confirmInvocationContext = confirmInvocationContext;
+        this.cancelInvocationContext = cancelInvocationContext;
+        this.transactionContextEditorClass = transactionContextEditorClass;
+    }
+
     /**
      * 提交事务
      */
