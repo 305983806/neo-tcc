@@ -20,6 +20,6 @@ public interface TransactionRepository {
     int create(Transaction transaction);
     int update(Transaction transaction);
     int delete(Transaction transaction);
-    Transaction getTransaction(TransactionId id);
+    Transaction getTransaction(TransactionId transactionId);
     List<Transaction> getTimeoutTransactions(Date date);
 }
