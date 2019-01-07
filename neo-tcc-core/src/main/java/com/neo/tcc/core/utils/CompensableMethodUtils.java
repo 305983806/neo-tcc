@@ -72,4 +72,15 @@ public class CompensableMethodUtils {
             return MethodType.NORMAL;
         }
     }
+
+    public static int getTransactionContextParamPosition(Class<?>[] parameterTypes) {
+        int position = -1;
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i].equals(TransactionContext.class)) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
 }

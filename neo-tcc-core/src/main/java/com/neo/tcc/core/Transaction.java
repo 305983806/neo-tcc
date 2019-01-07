@@ -33,7 +33,7 @@ public class Transaction implements Serializable {
     /**
      * 重试次数
      */
-    private int retryTime;
+    private int retryTimes;
     /**
      * 创建时间
      */
@@ -120,16 +120,16 @@ public class Transaction implements Serializable {
         return transactionType;
     }
 
-    public int getRetryTime() {
-        return retryTime;
+    public int getRetryTimes() {
+        return retryTimes;
     }
 
-    public void addRetryTime() {
-        this.retryTime++;
+    public void addRetryTimes() {
+        this.retryTimes++;
     }
 
-    public void resetRetryTime(int retryTime) {
-        this.retryTime = retryTime;
+    public void resetRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
     }
 
     public Date getCreateTime() {

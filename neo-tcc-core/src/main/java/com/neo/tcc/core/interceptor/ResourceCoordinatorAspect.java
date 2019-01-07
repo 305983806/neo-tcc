@@ -1,5 +1,6 @@
 package com.neo.tcc.core.interceptor;
 
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -17,8 +18,8 @@ public abstract class ResourceCoordinatorAspect {
     public void transactionContextCall() {}
 
     @Around("transactionContextCall()")
-    public Object interceptTransactionContextMethod() {
-        return null;
+    public Object interceptTransactionContextMethod(ProceedingJoinPoint pjp) throws Throwable {
+        return resourceCoordinatorInterceptor.interceptTransactionContextMethod(pjp);
     }
 
     public abstract int getOrder();

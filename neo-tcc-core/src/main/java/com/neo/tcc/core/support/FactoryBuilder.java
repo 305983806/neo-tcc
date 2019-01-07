@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Date: 2019/1/2 22:14
  * @Description:
  */
-public class FactoryBuilder {
+public final class FactoryBuilder {
     /**
      * Bean 工厂集合
      */

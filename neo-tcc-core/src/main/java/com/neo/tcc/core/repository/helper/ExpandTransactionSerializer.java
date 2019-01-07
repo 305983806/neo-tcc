@@ -27,7 +27,7 @@ public class ExpandTransactionSerializer {
         map.put("BRANCH_QUALIFIER".getBytes(), transaction.getId().getBranchQualifier());
         map.put("STATUS".getBytes(), ByteUtils.intToBytes(transaction.getStatus().getId()));
         map.put("TRANSACTION_TYPE".getBytes(), ByteUtils.intToBytes(transaction.getTransactionType().getId()));
-        map.put("RETRY_TIME".getBytes(), ByteUtils.intToBytes(transaction.getRetryTime()));
+        map.put("RETRY_TIME".getBytes(), ByteUtils.intToBytes(transaction.getRetryTimes()));
         map.put("CREATE_TIME".getBytes(), DateFormatUtils.format(transaction.getCreateTime(), "yyyy-MM-dd HH:mm:ss").getBytes());
         map.put("LAST_UPDATE_TIME".getBytes(), DateFormatUtils.format(transaction.getLastUpdateTime(), "yyyy-MM-dd HH:mm:ss").getBytes());
         map.put("VERSION".getBytes(), ByteUtils.longToBytes(transaction.getVersion()));
@@ -47,7 +47,7 @@ public class ExpandTransactionSerializer {
         byte[] content = propertyMap.get("CONTENT");
         Transaction transaction = (Transaction) serializer.deserialize(content);
         transaction.changeStatus(TransactionStatus.valueOf(ByteUtils.bytesToInt(propertyMap.get("STATUS"))));
-        transaction.resetRetryTime(ByteUtils.bytesToInt(propertyMap.get("RETRY_TIME")));
+        transaction.resetRetryTimes(ByteUtils.bytesToInt(propertyMap.get("RETRY_TIME")));
 
         try {
             transaction.setLastUpdateTime(DateUtils.parseDate(new String(propertyMap.get("LAST_UPDATE_TIME")), "yyyy-MM-dd HH:mm:ss"));
