@@ -34,8 +34,12 @@ public class CompensableTransactionInterceptor {
     private TransactionManager transactionManager;
     private Set<Class<? extends Exception>> delayCancelExceptions;
 
-    public CompensableTransactionInterceptor(TransactionManager transactionManager) {
+    public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
+    }
+
+    public void setDelayCancelExceptions(Set<Class<? extends Exception>> delayCancelExceptions) {
+        this.delayCancelExceptions = delayCancelExceptions;
     }
 
     /**

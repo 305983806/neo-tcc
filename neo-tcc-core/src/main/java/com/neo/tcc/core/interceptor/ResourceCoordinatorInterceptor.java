@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 public class ResourceCoordinatorInterceptor {
     private TransactionManager transactionManager;
 
-    public ResourceCoordinatorInterceptor(TransactionManager transactionManager) {
+    public void setTransactionManager(TransactionManager transactionManager) {
         this.transactionManager = transactionManager;
     }
 

@@ -22,5 +22,9 @@ public abstract class ResourceCoordinatorAspect {
         return resourceCoordinatorInterceptor.interceptTransactionContextMethod(pjp);
     }
 
+    public void setResourceCoordinatorInterceptor(ResourceCoordinatorInterceptor resourceCoordinatorInterceptor) {
+        this.resourceCoordinatorInterceptor = resourceCoordinatorInterceptor;
+    }
+
     public abstract int getOrder();
 }
