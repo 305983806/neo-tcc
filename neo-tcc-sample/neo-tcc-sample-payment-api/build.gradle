@@ -1,0 +1,3 @@
+dependencies {
+    implementation "com.lonntec:lonntec-tools:${LONNTEC_TOOLS}"
+}
