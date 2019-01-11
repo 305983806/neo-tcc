@@ -1,4 +1,4 @@
-package com.neo.tcc.core.api;
+package com.neo.tcc.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

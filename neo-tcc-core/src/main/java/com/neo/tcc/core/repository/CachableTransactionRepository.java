@@ -2,10 +2,10 @@ package com.neo.tcc.core.repository;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.neo.tcc.api.TransactionId;
 import com.neo.tcc.core.OptimisticLockException;
 import com.neo.tcc.core.Transaction;
 import com.neo.tcc.core.TransactionRepository;
-import com.neo.tcc.core.api.TransactionId;
 
 import javax.transaction.xa.Xid;
 import java.util.Date;

@@ -1,8 +1,9 @@
 dependencies {
-    implementation "redis.clients:jedis:${JEDIS}"
+    compile "redis.clients:jedis:${JEDIS}"
     implementation "com.google.guava:guava:${GUAVA}"
     implementation "com.alibaba:fastjson:${FASTJSON}"
     implementation "com.esotericsoftware:kryo-shaded:${KRYO_SHADED}"
     implementation "org.apache.commons:commons-lang3:${COMMONS_LANG3}"
     implementation "org.aspectj:aspectjweaver:${ASPECTJWEAVER}"
+    compile project (":neo-tcc-api")
 }

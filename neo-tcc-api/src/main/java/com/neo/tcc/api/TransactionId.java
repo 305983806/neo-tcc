@@ -1,4 +1,4 @@
-package com.neo.tcc.core.api;
+package com.neo.tcc.api;
 
 import javax.transaction.xa.Xid;
 import java.io.Serializable;

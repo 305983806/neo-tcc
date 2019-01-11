@@ -1,3 +1,4 @@
 dependencies {
-    implementation "com.lonntec:lonntec-tools:${LONNTEC_TOOLS}"
+    compile "com.lonntec:lonntec-tools:${LONNTEC_TOOLS}"
+    compile project (":neo-tcc-api")
 }

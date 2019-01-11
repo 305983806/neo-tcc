@@ -1,7 +1,7 @@
 package com.neo.tcc.core.utils;
 
-import com.neo.tcc.core.api.Propagation;
-import com.neo.tcc.core.api.TransactionContext;
+import com.neo.tcc.api.Propagation;
+import com.neo.tcc.api.TransactionContext;
 
 /**
  * @Auther: cp.Chen

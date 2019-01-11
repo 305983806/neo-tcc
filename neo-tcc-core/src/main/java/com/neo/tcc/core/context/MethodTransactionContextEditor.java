@@ -1,7 +1,7 @@
 package com.neo.tcc.core.context;
 
-import com.neo.tcc.core.api.TransactionContext;
-import com.neo.tcc.core.api.TransactionContextEditor;
+import com.neo.tcc.api.TransactionContext;
+import com.neo.tcc.api.TransactionContextEditor;
 import com.neo.tcc.core.utils.CompensableMethodUtils;
 
 import java.lang.reflect.Method;

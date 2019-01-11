@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/1/8 21:11
  * @Description:
  */
-@Component
-@EnableScheduling
+//@Component
+//@EnableScheduling
 public class TCCSpringConfiguration {
     @Bean
     public SpringBeanFactory springBeanFactory() {

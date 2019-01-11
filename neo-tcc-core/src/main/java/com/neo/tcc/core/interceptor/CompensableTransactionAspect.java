@@ -18,7 +18,7 @@ public abstract class CompensableTransactionAspect {
         this.compensableTransactionInterceptor = compensableTransactionInterceptor;
     }
 
-    @Pointcut("@annotation(com.neo.tcc.core.api.Compensable)")
+    @Pointcut("@annotation(com.neo.tcc.api.Compensable)")
     public void compensableService() {
 
     }

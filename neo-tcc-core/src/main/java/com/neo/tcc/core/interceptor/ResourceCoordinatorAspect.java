@@ -14,7 +14,7 @@ import org.aspectj.lang.annotation.Pointcut;
 public abstract class ResourceCoordinatorAspect {
     private ResourceCoordinatorInterceptor resourceCoordinatorInterceptor;
 
-    @Pointcut("@annotation(com.neo.tcc.core.api.Compensable)")
+    @Pointcut("@annotation(com.neo.tcc.api.Compensable)")
     public void transactionContextCall() {}
 
     @Around("transactionContextCall()")

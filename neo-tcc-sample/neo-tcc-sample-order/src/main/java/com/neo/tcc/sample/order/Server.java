@@ -9,8 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description:
  */
 @SpringBootApplication(scanBasePackages = {
-        "com.lonntec.springSupport.config",
-        "com.neo.tcc.sample.order.controller"
+        "com.lonntec.springSupport.handler",
+        "com.lonntec.springSupport.valid",
+        "com.neo.tcc.*"
 })
 public class Server {
     public static void main(String[] args) {

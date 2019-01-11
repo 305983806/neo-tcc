@@ -1,8 +1,8 @@
 package com.neo.tcc.core.utils;
 
-import com.neo.tcc.core.api.Compensable;
-import com.neo.tcc.core.api.Propagation;
-import com.neo.tcc.core.api.TransactionContext;
+import com.neo.tcc.api.Compensable;
+import com.neo.tcc.api.Propagation;
+import com.neo.tcc.api.TransactionContext;
 import com.neo.tcc.core.common.MethodType;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
