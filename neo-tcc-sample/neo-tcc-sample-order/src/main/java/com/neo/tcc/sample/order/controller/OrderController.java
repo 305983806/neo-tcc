@@ -3,6 +3,8 @@ package com.neo.tcc.sample.order.controller;
 import com.lonntec.common.bean.result.DefaultError;
 import com.lonntec.common.bean.result.SuccessResp;
 import com.neo.tcc.sample.order.common.OrderException;
+import com.neo.tcc.sample.order.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -16,12 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/create")
-    public SuccessResp create(@CookieValue String ctego_session) {
+    public SuccessResp create() {
         //TODO 预占库
-
-        throw new OrderException(DefaultError.SYS_HTTP_NO_RESPONSE);
+        orderService.submit();
+//        throw new OrderException(DefaultError.SYS_HTTP_NO_RESPONSE);
+        return SuccessResp.build();
     }
 
     @GetMapping("/pay")

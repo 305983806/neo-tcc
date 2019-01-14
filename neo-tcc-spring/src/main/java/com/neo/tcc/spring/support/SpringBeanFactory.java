@@ -22,9 +22,9 @@ public class SpringBeanFactory implements BeanFactory, ApplicationContextAware {
     }
 
     @Override
-    public <T> boolean isFactoryOf(Class<T> clazz) {
+    public boolean isFactoryOf(Class clazz) {
         Map map = this.applicationContext.getBeansOfType(clazz);
-        return false;
+        return map.size() > 0;
     }
 
     @Override

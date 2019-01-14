@@ -23,7 +23,7 @@ public class ConfigurableCoordinatorAspect extends ResourceCoordinatorAspect imp
 
     @Override
     public int getOrder() {
-        return 0;
+        return Ordered.HIGHEST_PRECEDENCE + 1;
     }
 
     public void setTransactionConfigurator(TransactionConfigurator transactionConfigurator) {

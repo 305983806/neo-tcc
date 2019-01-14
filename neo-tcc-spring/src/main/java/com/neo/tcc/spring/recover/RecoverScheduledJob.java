@@ -21,7 +21,7 @@ public class RecoverScheduledJob {
         try {
             MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
             jobDetail.setTargetObject(transactionRecovery);
-            jobDetail.setTargetMethod("StartRecover");
+            jobDetail.setTargetMethod("startRecover");
             jobDetail.setName("transactionRecoveryJob");
             jobDetail.setConcurrent(false);
             jobDetail.afterPropertiesSet();

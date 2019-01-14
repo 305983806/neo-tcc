@@ -82,7 +82,7 @@ public abstract class CachableTransactionRepository implements TransactionReposi
         for (Transaction transaction : transactions) {
             putToCache(transaction);
         }
-        return null;
+        return transactions;
     }
 
     protected void putToCache(Transaction transaction) {

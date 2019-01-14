@@ -1,6 +1,7 @@
 package com.neo.tcc.sample.inventory.common.config;
 
 import com.neo.tcc.core.repository.RedisTransactionRepository;
+import com.neo.tcc.core.serializer.KryoPoolSerializer;
 import com.neo.tcc.spring.recover.DefaultRecoverConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,5 +42,10 @@ public class TccConfig {
         RedisTransactionRepository repository = new RedisTransactionRepository();
         repository.setJedisPool(jedisPool);
         return repository;
+    }
+
+    @Bean
+    public KryoPoolSerializer objectSerializer() {
+        return new KryoPoolSerializer();
     }
 }

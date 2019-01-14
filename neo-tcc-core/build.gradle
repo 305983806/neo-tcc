@@ -5,5 +5,5 @@ dependencies {
     implementation "com.esotericsoftware:kryo-shaded:${KRYO_SHADED}"
     implementation "org.apache.commons:commons-lang3:${COMMONS_LANG3}"
     implementation "org.aspectj:aspectjweaver:${ASPECTJWEAVER}"
-    compile project (":neo-tcc-api")
+    implementation project (":neo-tcc-api")
 }

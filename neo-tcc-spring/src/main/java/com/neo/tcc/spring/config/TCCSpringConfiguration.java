@@ -1,41 +1,48 @@
 package com.neo.tcc.spring.config;
 
 import com.neo.tcc.core.recover.TransactionRecovery;
+import com.neo.tcc.spring.ConfigurableCoordinatorAspect;
 import com.neo.tcc.spring.ConfigurableTransactionAspect;
 import com.neo.tcc.spring.recover.RecoverScheduledJob;
 import com.neo.tcc.spring.support.SpringBeanFactory;
 import com.neo.tcc.spring.support.SpringTransactionConfigurator;
-import org.quartz.Scheduler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
+
+import java.util.Properties;
 
 /**
  * @Auther: cp.Chen
  * @Date: 2019/1/8 21:11
  * @Description:
  */
-//@Component
-//@EnableScheduling
+@Component
+@EnableScheduling
 public class TCCSpringConfiguration {
     @Bean
     public SpringBeanFactory springBeanFactory() {
         return new SpringBeanFactory();
     }
 
-    @Bean
+    @Bean(initMethod = "init")
     public SpringTransactionConfigurator transactionConfigurator() {
         SpringTransactionConfigurator configurator = new SpringTransactionConfigurator();
-        configurator.init();
         return configurator;
     }
 
-    @Bean
+    @Bean(initMethod = "init")
     public ConfigurableTransactionAspect compensableTransactionAspect(SpringTransactionConfigurator transactionConfigurator) {
         ConfigurableTransactionAspect aspect = new ConfigurableTransactionAspect();
         aspect.setTransactionConfigurator(transactionConfigurator);
-        aspect.init();
+        return aspect;
+    }
+
+    @Bean(initMethod = "init")
+    public ConfigurableCoordinatorAspect resourceCoordinatorAspect(SpringTransactionConfigurator transactionConfigurator) {
+        ConfigurableCoordinatorAspect aspect = new ConfigurableCoordinatorAspect();
+        aspect.setTransactionConfigurator(transactionConfigurator);
         return aspect;
     }
 
@@ -48,16 +55,20 @@ public class TCCSpringConfiguration {
 
     @Bean
     public SchedulerFactoryBean recoverScheduler() {
-        return new SchedulerFactoryBean();
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setQuartzProperties(new Properties());
+        return schedulerFactoryBean;
     }
 
-    @Bean
+    @Bean(initMethod = "init")
     public RecoverScheduledJob recoverScheduledJob(TransactionRecovery transactionRecovery,
-                                                   SpringTransactionConfigurator transactionConfigurator) {
+                                                   SpringTransactionConfigurator transactionConfigurator,
+                                                   SchedulerFactoryBean recoverScheduler) {
         RecoverScheduledJob job = new RecoverScheduledJob();
         job.setTransactionRecovery(transactionRecovery);
         job.setTransactionConfigurator(transactionConfigurator);
-        job.setScheduler((Scheduler) recoverScheduler());
+        this.recoverScheduler().start();
+        job.setScheduler(recoverScheduler.getScheduler());
         return job;
     }
 }
