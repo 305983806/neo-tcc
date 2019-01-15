@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  */
 public class ReflectionUtils {
     public static Class getDeclaringType(Class clazz, String methodName, Class<?>[] parameterTypes) {
-        Method method = null;
+        Method method;
         Class findClass = clazz;
         do {
             Class[] clazzes = findClass.getInterfaces();

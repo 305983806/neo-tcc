@@ -37,6 +37,7 @@ public class KryoPoolSerializer<T> implements ObjectSerializer<T> {
 
     public KryoPoolSerializer(int initPoolSize) {
         this.initPoolSize = initPoolSize;
+        init();
     }
 
     private void init() {
@@ -47,7 +48,7 @@ public class KryoPoolSerializer<T> implements ObjectSerializer<T> {
     }
 
     @Override
-    public byte[] serialize(T object) {
+    public byte[] serialize(final T object) {
         return pool.run(new KryoCallback<byte[]>() {
             @Override
             public byte[] execute(Kryo kryo) {
@@ -63,7 +64,7 @@ public class KryoPoolSerializer<T> implements ObjectSerializer<T> {
     }
 
     @Override
-    public T deserialize(byte[] bytes) {
+    public T deserialize(final byte[] bytes) {
         return pool.run(new KryoCallback<T>() {
             @Override
             public T execute(Kryo kryo) {
@@ -76,7 +77,7 @@ public class KryoPoolSerializer<T> implements ObjectSerializer<T> {
     }
 
     @Override
-    public T clone(T object) {
+    public T clone(final T object) {
         return pool.run(new KryoCallback<T>() {
             @Override
             public T execute(Kryo kryo) {

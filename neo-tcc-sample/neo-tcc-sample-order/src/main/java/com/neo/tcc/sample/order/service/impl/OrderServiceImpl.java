@@ -3,12 +3,16 @@ package com.neo.tcc.sample.order.service.impl;
 import com.neo.tcc.api.Compensable;
 import com.neo.tcc.sample.inventory.api.InventoryService;
 import com.neo.tcc.sample.inventory.bean.InvUse;
+import com.neo.tcc.sample.inventory.bean.InvUseItem;
 import com.neo.tcc.sample.order.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Auther: cp.Chen
@@ -27,7 +31,18 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void submit() {
         log.info("try 提交订单：保存订单，并设置订单状态为\"草稿\"");
-        inventoryServiceProxy.use(null, new InvUse());
+        InvUse invUse = new InvUse();
+
+        InvUseItem item = new InvUseItem();
+        item.setArticleNumber("RS-03K102JT");
+        item.setQty(10);
+
+        List<InvUseItem> items = new ArrayList<>();
+        items.add(item);
+
+        invUse.setItems(items);
+        invUse.setNumber("123");
+        inventoryServiceProxy.use(null, invUse);
         log.info("try 提交订单：inventoryServiceProxy->use 调用占用库存结束");
     }
 

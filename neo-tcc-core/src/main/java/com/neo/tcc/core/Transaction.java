@@ -33,15 +33,15 @@ public class Transaction implements Serializable {
     /**
      * 重试次数
      */
-    private int retryTimes;
+    private volatile int retryTimes = 0;
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Date createTime = new Date();
     /**
      * 最后更新时间
      */
-    private Date lastUpdateTime;
+    private Date lastUpdateTime = new Date();
     /**
      * 版本号
      */

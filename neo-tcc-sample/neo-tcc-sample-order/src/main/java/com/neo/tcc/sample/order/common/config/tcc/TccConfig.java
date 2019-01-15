@@ -19,7 +19,7 @@ public class TccConfig {
     @Bean
     public DefaultRecoverConfig recoverConfig() {
         DefaultRecoverConfig recoverConfig = new DefaultRecoverConfig();
-        recoverConfig.setMaxRetryCount(30);
+        recoverConfig.setMaxRetryCount(5);
         recoverConfig.setRecoverDuration(5);
         recoverConfig.setCronExpression("0/5 * * * * ?");
         return recoverConfig;

@@ -88,7 +88,8 @@ public final class FactoryBuilder {
                         try {
                             ClassLoader loader = Thread.currentThread().getContextClassLoader();
                             Class<?> clazz = loader.loadClass(className);
-                        } catch (ClassNotFoundException e) {
+                            instance = (T) clazz.newInstance();
+                        } catch (Exception e) {
                             throw new RuntimeException("Failed to create an instance of " + className, e);
                         }
                     }

@@ -31,6 +31,14 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
 
     private ObjectSerializer serializer = new KryoPoolSerializer();
 
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setSerializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
+    }
+
     public int getFetchKeySize() {
         return fetchKeySize;
     }
@@ -55,11 +63,11 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
     }
 
     public void setSupportScan(boolean supportScan) {
-        isSupportScan = supportScan;
+        this.isSupportScan = supportScan;
     }
 
     public void setForbiddenKeys(boolean forbiddenKeys) {
-        isForbiddenKeys = forbiddenKeys;
+        this.isForbiddenKeys = forbiddenKeys;
     }
 
     @Override
@@ -100,7 +108,7 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
                         params.add(entry.getValue());
                     }
                     Object result = jedis.eval(
-                            String.format("if redis.call('hget',KEYS[1],'VERSION') = '%s' then redis.call('hmset', KEYS[1], unpack(ARGV)); return 1; end; return 0;", transaction.getVersion() - 1).getBytes(),
+                            String.format("if redis.call('hget',KEYS[1],'VERSION') == '%s' then redis.call('hmset', KEYS[1], unpack(ARGV)); return 1; end; return 0;", transaction.getVersion() - 1).getBytes(),
                             Arrays.asList(RedisHelper.getRedisKey(prefix, transaction.getId())), params);
                     return (Long) result;
                 }
@@ -136,6 +144,11 @@ public class RedisTransactionRepository extends CachableTransactionRepository {
                     return jedis.hgetAll(RedisHelper.getRedisKey(prefix, id));
                 }
             });
+            log.info("redis find cost time: {}", (System.currentTimeMillis() - startTime));
+
+            if (content != null && content.size() > 0) {
+                return ExpandTransactionSerializer.deserialize(serializer, content);
+            }
             return null;
         } catch (Exception e) {
             throw new TransactionIOException(e);

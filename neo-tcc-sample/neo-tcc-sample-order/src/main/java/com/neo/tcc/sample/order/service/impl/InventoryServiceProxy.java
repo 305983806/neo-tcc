@@ -19,7 +19,7 @@ public class InventoryServiceProxy {
     @Autowired
     private InventoryService inventoryService;
 
-    @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "doSubmit", cancelMethod = "cancelSubmit",
+    @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "use", cancelMethod = "use",
             transactionContextEditor = MethodTransactionContextEditor.class)
     protected void use(TransactionContext transactionContext, InvUse invUse) {
         inventoryService.getInvService().Use(transactionContext, invUse);

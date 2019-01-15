@@ -12,7 +12,7 @@ public interface RecoverConfig {
     /**
      * @return 最大重试次数
      */
-    int getMaxRetryCount();
+    int getMaxRetryTimes();
 
     /**
      * @return 恢复间隔时间，单位：秒

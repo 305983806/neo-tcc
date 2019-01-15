@@ -90,14 +90,14 @@ public class TransactionManager {
 
         if (asyncCommit) {
             try {
-                Long statTime = System.currentTimeMillis();
+                Long startTime = System.currentTimeMillis();
                 executorService.submit(new Runnable() {
                     @Override
                     public void run() {
                         commitTransaction(transaction);
                     }
                 });
-                log.debug("async submit cost time" + (System.currentTimeMillis() - statTime));
+                log.debug("async submit cost time" + (System.currentTimeMillis() - startTime));
             } catch (Throwable commitException) {
                 // 当事务提交过程中出现异常，转抛出 ConfirmingException 异常，且事务在事务日志中不被删除，交由 recovery 去处理长时间没有被删除的事务
                 log.warn("compensable transaction async submit confirm failed, recovery job will try to confirm later.", commitException);

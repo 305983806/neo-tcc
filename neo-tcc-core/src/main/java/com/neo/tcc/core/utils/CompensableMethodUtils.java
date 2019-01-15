@@ -83,4 +83,14 @@ public class CompensableMethodUtils {
         }
         return position;
     }
+
+    public static TransactionContext getTransactionContextFromArgs(Object[] args) {
+        TransactionContext transactionContext = null;
+        for (Object arg : args) {
+            if (arg != null && TransactionContext.class.isAssignableFrom(arg.getClass())) {
+                transactionContext = (TransactionContext) arg;
+            }
+        }
+        return transactionContext;
+    }
 }

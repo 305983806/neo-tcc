@@ -154,10 +154,10 @@ public class CompensableTransactionInterceptor {
                     try {
                         transaction = transactionManager.propagationExistBegin(transactionContext);
                         transactionManager.commit(asyncConfirm);
-                        break;
                     } catch (NoExistedTransactionException e) {
                         // 事务已提交，可以忽略异常处理。
                     }
+                    break;
                 case CANCELLING:
                     try {
                         transaction = transactionManager.propagationExistBegin(transactionContext);
@@ -165,6 +165,7 @@ public class CompensableTransactionInterceptor {
                     } catch (NoExistedTransactionException e) {
                         // 事务已取消，可以忽略异常处理。
                     }
+                    break;
             }
         } finally {
             // 将事务从当前线程事务队列移除

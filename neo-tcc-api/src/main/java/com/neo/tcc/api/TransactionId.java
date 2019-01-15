@@ -48,6 +48,15 @@ public class TransactionId implements Xid, Serializable {
         return new TransactionId(cloneGlobalTransactionId, cloneBranchQualifier);
     }
 
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + this.getFormatId();
+        result = prime * result + Arrays.hashCode(branchQualifier);
+        result = prime * result + Arrays.hashCode(globalTransactionId);
+        return result;
+    }
+
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -94,6 +103,14 @@ public class TransactionId implements Xid, Serializable {
     @Override
     public byte[] getBranchQualifier() {
         return branchQualifier;
+    }
+
+    public void setGlobalTransactionId(byte[] globalTransactionId) {
+        this.globalTransactionId = globalTransactionId;
+    }
+
+    public void setBranchQualifier(byte[] branchQualifier) {
+        this.branchQualifier = branchQualifier;
     }
 
     @Override

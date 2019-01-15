@@ -59,7 +59,7 @@ public class TransactionRecovery {
     private void recoverErrorTransactions(List<Transaction> transactions) {
         for (Transaction transaction : transactions) {
             // 超过最大重试次数
-            if (transaction.getRetryTimes() > transactionConfigurator.getRecoverConfig().getMaxRetryCount()) {
+            if (transaction.getRetryTimes() > transactionConfigurator.getRecoverConfig().getMaxRetryTimes()) {
                 log.error("recover failed with max retry count, will not try again. tcc id:{}, status:{}, retry times:{}, transaction content:{}",
                         transaction.getId(),
                         transaction.getStatus().getId(),
@@ -70,7 +70,7 @@ public class TransactionRecovery {
             // 分支事务超过最大可重试时间
             if (transaction.getTransactionType().equals(TransactionType.BRANCH)
                     && (transaction.getCreateTime().getTime() +
-                    transactionConfigurator.getRecoverConfig().getMaxRetryCount() *
+                    transactionConfigurator.getRecoverConfig().getMaxRetryTimes() *
                             transactionConfigurator.getRecoverConfig().getRecoverDuration() * 1000
                     > System.currentTimeMillis())) {
                 continue;

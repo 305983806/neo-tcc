@@ -8,5 +8,5 @@ import redis.clients.jedis.Jedis;
  * @Description:
  */
 public interface JedisCallback<T> {
-    public T doInJedis(Jedis jedis);
+    T doInJedis(Jedis jedis);
 }

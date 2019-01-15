@@ -15,7 +15,7 @@ import java.util.Set;
 public class DefaultRecoverConfig implements RecoverConfig {
     public static final RecoverConfig INSTANCE = new DefaultRecoverConfig();
 
-    private int maxRetryCount = 30;
+    private int maxRetryCount = 5;
     private int recoverDuration = 120; // 秒
     private String cronExpression = "0 */1 * * * ?";
     private int asyncTerminateThreadPoolSize = 1024;
@@ -27,7 +27,7 @@ public class DefaultRecoverConfig implements RecoverConfig {
     }
 
     @Override
-    public int getMaxRetryCount() {
+    public int getMaxRetryTimes() {
         return maxRetryCount;
     }
 
