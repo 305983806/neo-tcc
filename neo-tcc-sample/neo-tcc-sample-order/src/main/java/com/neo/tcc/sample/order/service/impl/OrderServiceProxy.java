@@ -11,17 +11,17 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/1/10 20:44
  * @Description:
  */
-@Component
+//@Component
 public class OrderServiceProxy {
-    @Autowired
-    private InventoryService inventoryService;
+//    @Autowired
+//    private InventoryService inventoryService;
 
     /**
      * 预占库存
      */
 //    @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "doCreate", cancelMethod = "cancel",
 //            transactionContextEditor = MethodTransactionContextEditor.class)
-    public void holdingStock(TransactionContext transactionContext, InvUse invUse) {
-        inventoryService.getInvService().preUse(transactionContext, invUse);
-    }
+//    public void holdingStock(TransactionContext transactionContext, InvUse invUse) {
+//        inventoryService.getInvService().preUse(transactionContext, invUse);
+//    }
 }

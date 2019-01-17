@@ -19,21 +19,21 @@ public class InvServiceImpl implements InvService {
     }
 
     @Override
-    public SuccessResp preUse(TransactionContext transactionContext, InvUse inv) {
+    public SuccessResp preUse(InvUse inv) {
         String url = inventoryService.getHost() + "/inv/preuse";
         String res = inventoryService.post(url, inv.toJson());
         return SuccessResp.fromJson(res);
     }
 
     @Override
-    public SuccessResp Use(TransactionContext transactionContext, InvUse inv) {
+    public SuccessResp use(TransactionContext context, InvUse inv) {
         String url = inventoryService.getHost() + "/inv/use";
         String res = inventoryService.post(url, inv.toJson());
         return SuccessResp.fromJson(res);
     }
 
     @Override
-    public SuccessResp unUse(TransactionContext transactionContext,InvUse inv) {
+    public SuccessResp unUse(InvUse inv) {
         String url = inventoryService.getHost() + "/inv/unuse";
         String res = inventoryService.post(url, inv.toJson());
         return SuccessResp.fromJson(res);

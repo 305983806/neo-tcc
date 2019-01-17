@@ -23,8 +23,11 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
+//    @Autowired
+//    private InventoryServiceProxy inventoryServiceProxy;
+
     @Autowired
-    private InventoryServiceProxy inventoryServiceProxy;
+    private InventoryService inventoryService;
 
     @Override
     @Compensable(confirmMethod = "doSubmit", cancelMethod = "cancelSubmit")
@@ -42,7 +45,8 @@ public class OrderServiceImpl implements OrderService {
 
         invUse.setItems(items);
         invUse.setNumber("123");
-        inventoryServiceProxy.use(null, invUse);
+//        inventoryServiceProxy.use(null, invUse);
+        inventoryService.getInvService().use(invUse);
         log.info("try 提交订单：inventoryServiceProxy->use 调用占用库存结束");
     }
 

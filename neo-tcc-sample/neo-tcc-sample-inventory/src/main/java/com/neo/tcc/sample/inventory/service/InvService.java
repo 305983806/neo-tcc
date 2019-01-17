@@ -1,6 +1,7 @@
 package com.neo.tcc.sample.inventory.service;
 
 import com.neo.tcc.api.TransactionContext;
+import com.neo.tcc.sample.inventory.bean.Inv;
 import com.neo.tcc.sample.inventory.bean.InvUse;
 
 /**
@@ -9,5 +10,5 @@ import com.neo.tcc.sample.inventory.bean.InvUse;
  * @Description:
  */
 public interface InvService {
-    void use(TransactionContext transactionContext, InvUse invUse);
+    void use(TransactionContext transactionContext, Inv inv);
 }

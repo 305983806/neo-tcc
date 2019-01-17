@@ -1,7 +1,6 @@
 package com.neo.tcc.sample.inventory.bean;
 
 import com.alibaba.fastjson.JSON;
-import com.neo.tcc.api.TransactionContext;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Valid;
@@ -11,18 +10,16 @@ import java.util.List;
 
 /**
  * @Auther: cp.Chen
- * @Date: 2019/1/10 14:42
+ * @Date: 2019/1/16 09:47
  * @Description:
  */
-public class InvUse {
+public class Inv {
     @NotEmpty
     private String number;
 
     @Size(min = 1)
     @Valid
     private List<InvUseItem> items = new ArrayList<>();
-
-    private TransactionContext transactionContext;
 
     public static InvUse fromJson(String json) {
         return JSON.parseObject(json, InvUse.class);
@@ -46,13 +43,5 @@ public class InvUse {
 
     public void setItems(List<InvUseItem> items) {
         this.items = items;
-    }
-
-    public TransactionContext getTransactionContext() {
-        return transactionContext;
-    }
-
-    public void setTransactionContext(TransactionContext transactionContext) {
-        this.transactionContext = transactionContext;
     }
 }

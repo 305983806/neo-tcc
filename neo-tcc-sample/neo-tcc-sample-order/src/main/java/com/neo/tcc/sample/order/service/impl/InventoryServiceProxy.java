@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/1/11 16:44
  * @Description:
  */
-@Component
+//@Component
 public class InventoryServiceProxy {
     @Autowired
     private InventoryService inventoryService;
 
-    @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "use", cancelMethod = "use",
-            transactionContextEditor = MethodTransactionContextEditor.class)
-    protected void use(TransactionContext transactionContext, InvUse invUse) {
-        inventoryService.getInvService().Use(transactionContext, invUse);
-    }
+//    @Compensable(propagation = Propagation.SUPPORTS, confirmMethod = "use", cancelMethod = "use",
+//            transactionContextEditor = MethodTransactionContextEditor.class)
+//    protected void use(TransactionContext transactionContext, InvUse invUse) {
+//        inventoryService.getInvService().Use(transactionContext, invUse);
+//    }
 }

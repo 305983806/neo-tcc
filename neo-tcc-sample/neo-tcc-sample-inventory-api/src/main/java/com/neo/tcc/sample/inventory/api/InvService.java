@@ -14,17 +14,17 @@ public interface InvService {
      * 预占库存
      * @param inv
      */
-    SuccessResp preUse(TransactionContext transactionContext, InvUse inv);
+    SuccessResp preUse(InvUse inv);
 
     /***
      * 扣减库存
      * @param inv
      */
-    SuccessResp Use(TransactionContext transactionContext, InvUse inv);
+    SuccessResp use(TransactionContext transactionContext, InvUse inv);
 
     /**
      * 取消预占库存
      * @param inv
      */
-    SuccessResp unUse(TransactionContext transactionContext, InvUse inv);
+    SuccessResp unUse(InvUse inv);
 }
