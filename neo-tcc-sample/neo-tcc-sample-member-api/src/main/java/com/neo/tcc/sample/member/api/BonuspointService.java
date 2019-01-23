@@ -1,13 +1,13 @@
-package com.neo.tcc.sample.inventory.api;
+package com.neo.tcc.sample.member.api;
 
 import com.neo.tcc.api.TransactionContext;
 
 /**
  * @Auther: cp.Chen
- * @Date: 2019/1/22 16:14
+ * @Date: 2019/1/22 16:38
  * @Description:
  */
-public interface InventoryService {
+public interface BonuspointService {
 
     void preUse(TransactionContext transactionContext);
 

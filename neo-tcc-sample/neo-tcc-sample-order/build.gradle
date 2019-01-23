@@ -1,8 +1,8 @@
 dependencies {
-    implementation "mysql:mysql-connector-java:8.0.11"
-    implementation "com.lonntec:lonntec-tools:${LONNTEC_TOOLS}"
+    implementation "com.neo:neo-rpc-client:${NEO_RPC}"
     implementation "org.springframework.boot:spring-boot-starter-web:${SPRINGBOOT}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${SPRINGBOOT}"
-    compile project (':neo-tcc-sample:neo-tcc-sample-inventory-api')
+
     compile project (':neo-tcc-spring')
+    compile project (':neo-tcc-sample:neo-tcc-sample-inventory-api')
+    compile project (':neo-tcc-sample:neo-tcc-sample-member-api')
 }

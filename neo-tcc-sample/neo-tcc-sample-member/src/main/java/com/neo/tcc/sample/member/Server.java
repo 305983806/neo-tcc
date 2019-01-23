@@ -1,4 +1,4 @@
-package com.neo.tcc.sample.inventory;
+package com.neo.tcc.sample.member;
 
 import com.neo.rpc.server.RpcServer;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 
 /**
  * @Auther: cp.Chen
- * @Date: 2019/1/9 14:44
+ * @Date: 2019/1/22 17:42
  * @Description:
  */
 @SpringBootApplication(scanBasePackages = {

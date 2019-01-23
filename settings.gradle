@@ -25,7 +25,7 @@ include 'neo-tcc-sample'
 include 'neo-tcc-sample:neo-tcc-sample-order'
 include 'neo-tcc-sample:neo-tcc-sample-inventory'
 include 'neo-tcc-sample:neo-tcc-sample-inventory-api'
-include 'neo-tcc-sample:neo-tcc-sample-payment'
-include 'neo-tcc-sample:neo-tcc-sample-payment-api'
+include 'neo-tcc-sample:neo-tcc-sample-member'
+include 'neo-tcc-sample:neo-tcc-sample-member-api'
 
 

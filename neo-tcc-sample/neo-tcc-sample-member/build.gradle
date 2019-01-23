@@ -2,5 +2,5 @@ dependencies {
     compile "com.neo:neo-rpc-server:${NEO_RPC}"
     implementation "org.springframework.boot:spring-boot-starter-web:${SPRINGBOOT}"
 
-    compile project (':neo-tcc-sample:neo-tcc-sample-inventory-api')
+    compile project (':neo-tcc-sample:neo-tcc-sample-member-api')
 }
