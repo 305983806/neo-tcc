@@ -7,6 +7,7 @@ import com.neo.tcc.core.context.MethodTransactionContextEditor;
 import com.neo.tcc.sample.inventory.api.InventoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,21 +20,21 @@ import org.springframework.stereotype.Service;
 public class InventoryServiceImpl implements InventoryService {
     private static final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
+    @Autowired
+    private InventoryTCCService inventoryTCCService;
 
     @Override
-    @Compensable(confirmMethod = "confirmUse", cancelMethod = "cancelUse", transactionContextEditor = MethodTransactionContextEditor.class)
     public void preUse(TransactionContext transactionContext) {
-        log.debug("预占库存：成功，30分钟内未确认将被释放。");
-//        throw new RuntimeException("测试TCC异常：inventory 预占库存出现异常。");
+        inventoryTCCService.preUse(transactionContext);
     }
 
     @Override
     public void confirmUse(TransactionContext transactionContext) {
-        log.debug("确认占用：成功。");
+
     }
 
     @Override
     public void cancelUse(TransactionContext transactionContext) {
-        log.debug("取消占用.");
+
     }
 }

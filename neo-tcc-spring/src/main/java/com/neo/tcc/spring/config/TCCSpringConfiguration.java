@@ -55,9 +55,7 @@ public class TCCSpringConfiguration {
 
     @Bean
     public SchedulerFactoryBean recoverScheduler() {
-        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
-        schedulerFactoryBean.setQuartzProperties(new Properties());
-        return schedulerFactoryBean;
+        return new SchedulerFactoryBean();
     }
 
     @Bean(initMethod = "init")
@@ -67,7 +65,6 @@ public class TCCSpringConfiguration {
         RecoverScheduledJob job = new RecoverScheduledJob();
         job.setTransactionRecovery(transactionRecovery);
         job.setTransactionConfigurator(transactionConfigurator);
-        this.recoverScheduler().start();
         job.setScheduler(recoverScheduler.getScheduler());
         return job;
     }

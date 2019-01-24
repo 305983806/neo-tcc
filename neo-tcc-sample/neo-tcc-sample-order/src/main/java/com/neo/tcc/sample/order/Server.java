@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description:
  */
 @SpringBootApplication(scanBasePackages = {
-        "com.neo.tcc.sample.*",
+        "com.neo.tcc",
         "com.neo.rpc"
 })
 public class Server {

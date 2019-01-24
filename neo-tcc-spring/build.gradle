@@ -1,7 +1,9 @@
 dependencies {
     compile project (":neo-tcc-core")
-    implementation "org.springframework:spring-context:${SPRING}"
+    compile project (":neo-tcc-api")
+    implementation "org.springframework:spring-aop:${SPRING}"
     implementation "org.quartz-scheduler:quartz:${QUARTZ}"
     implementation "org.aspectj:aspectjweaver:${ASPECTJWEAVER}"
+    implementation "org.springframework:spring-context:${SPRING}"
     implementation "org.springframework:spring-context-support:${SPRING}"
 }

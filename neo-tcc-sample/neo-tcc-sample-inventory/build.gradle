@@ -1,6 +1,8 @@
 dependencies {
     compile "com.neo:neo-rpc-server:${NEO_RPC}"
+    implementation "mysql:mysql-connector-java:${MYSQL}"
     implementation "org.springframework.boot:spring-boot-starter-web:${SPRINGBOOT}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${SPRINGBOOT}"
 
     compile project (':neo-tcc-spring')
     compile project (':neo-tcc-sample:neo-tcc-sample-inventory-api')
